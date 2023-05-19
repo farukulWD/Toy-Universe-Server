@@ -25,6 +25,17 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+    const toyCollection = client.db("toyDB").collection("toyos");
+
+    app.post("/addtoy",async(req,res)=>{
+        const body =req.body;
+        console.log(body);
+    })
+
+
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
@@ -36,6 +47,9 @@ async function run() {
   }
 }
 run().catch(console.dir);
+app.get("/",(req,res)=>{
+    res.send("Toy universe running")
+})
 
 app.listen(port, () => {
   console.log(`The Toy universe server is running ${port}`);
