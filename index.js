@@ -30,7 +30,14 @@ async function run() {
 
     app.post("/addtoy",async(req,res)=>{
         const body =req.body;
-        const result= await toyCollection.insertOne(body)
+        const result = await toyCollection.insertOne(body)
+        res.send(result)
+    })
+
+
+    app.get("/alltoy",async(req,res)=>{
+        const result = await toyCollection.find({}).toArray()
+        res.send(result)
     })
 
 
