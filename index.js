@@ -41,6 +41,12 @@ async function run() {
     })
 
 
+    app.get("/getJobByCategory/:category",async(req,res)=>{
+       const result = await toyCollection.find({sub_category: req.params.category}).toArray();
+       res.send(result)
+    })
+
+
 
 
     // Send a ping to confirm a successful connection
