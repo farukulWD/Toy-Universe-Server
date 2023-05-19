@@ -30,7 +30,7 @@ async function run() {
 
     app.post("/addtoy",async(req,res)=>{
         const body =req.body;
-        console.log(body);
+        const result= await toyCollection.insertOne(body)
     })
 
 
@@ -49,6 +49,7 @@ async function run() {
 run().catch(console.dir);
 app.get("/",(req,res)=>{
     res.send("Toy universe running")
+    
 })
 
 app.listen(port, () => {
