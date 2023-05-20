@@ -27,8 +27,8 @@ async function run() {
     client.connect();
 
     const toyCollection = client.db("toyDB").collection("toyos");
-    const indexKeys = { name: 1}
-    const indexOptions = { name: "toyName" }
+    const indexKeys = { name: 1 };
+    const indexOptions = { name: "toyName" };
 
     app.post("/addtoy", async (req, res) => {
       const body = req.body;
@@ -36,7 +36,6 @@ async function run() {
       const result = await toyCollection.insertOne(body);
       res.send(result);
     });
-
 
     app.get("/alltoy", async (req, res) => {
       const result = await toyCollection.find({}).limit(20).toArray();
@@ -57,8 +56,11 @@ async function run() {
     });
 
     app.get("/myCar/:email", async (req, res) => {
+      const type = req.query.type == "ascending";
+      const sortMethod = type ? 1 : -1;
       const result = await toyCollection
         .find({ seller_email: req.params.email })
+        .sort({ price: sortMethod })
         .toArray();
       res.send(result);
     });
@@ -70,14 +72,13 @@ async function run() {
       res.send(result);
     });
 
-
-    app.get("/searchToy/:searchName",async(req,res)=>{
-        const searchText = req.params.searchName;
-        const result = await toyCollection.find({$or:[
-          {name:{ $regex: searchText, $options: "i" }}
-        ]}).toArray()
-        res.send(result)
-    })
+    app.get("/searchToy/:searchName", async (req, res) => {
+      const searchText = req.params.searchName;
+      const result = await toyCollection
+        .find({ $or: [{ name: { $regex: searchText, $options: "i" } }] })
+        .toArray();
+      res.send(result);
+    });
 
     app.patch("/update/:id", async (req, res) => {
       const id = req.params.id;
